@@ -1,0 +1,22 @@
+Revision history for CGI-Application-Plugin-RunmodeDeclare
+
+0.04    2008-10-23  Rhesa Rozendaal <rhesa@cpan.org>
+        * new feature: support code attributes
+        * simplified the signature parsing (see Method::Signatures::Simple)
+        * simplified the installer code by using Devel::Declare::MethodInstaller::Simple
+        * considered changing my name to Rhesa Simple ;-)
+
+0.03    2008-10-20  Rhesa Rozendaal <rhesa@cpan.org>
+        * new feature: change the default invocant name (Richard Jones)
+        * security fix: reversed the order in which we acquire values
+          for arguments: first method input, then $app->param, then
+          $query->param (Michael Peters and Mark Stosberg)
+        * bugfix: properly check uniqueness of startmode (RT #40174)
+
+0.02    2008-09-26  Rhesa Rozendaal <rhesa@cpan.org>
+        Fix test case. It relied on an unreleased version
+        of CGI::Application.
+
+0.01    2008-09-26
+        First version, released to solicit comments.
+

@@ -3,7 +3,7 @@ package CGI::Application::Plugin::RunmodeDeclare;
 use warnings;
 use strict;
 
-our $VERSION = '0.03_01';
+our $VERSION = '0.03_02';
 
 use base 'Devel::Declare::MethodInstaller::Simple';
 use Carp qw(croak);
@@ -56,7 +56,14 @@ sub _setup_startmode {
     no strict 'refs'; no warnings 'uninitialized';
     my ($pkg, $name) = _split($fullname);
     croak "start mode redefined (from $REGISTRY{$pkg}{start_mode_installed})" if $REGISTRY{$pkg}{start_mode_installed};
-    $pkg->add_callback( init => sub { $_[0]->run_modes([ $name ]); $_[0]->start_mode($name); } );
+    $pkg->add_callback(
+        init => sub {
+            return if exists $_[0]->{__START_MODE_SET_BY_RUNMODEDECLARE};
+            $_[0]->run_modes( [$name] );
+            $_[0]->start_mode($name);
+            $_[0]->{__START_MODE_SET_BY_RUNMODEDECLARE} = 1;
+        }
+    );
     $REGISTRY{$pkg}{start_mode_installed} = $fullname;
 }
 sub _setup_errormode {
@@ -64,7 +71,13 @@ sub _setup_errormode {
     no strict 'refs'; no warnings 'uninitialized';
     my ($pkg, $name) = _split($fullname);
     croak "error mode redefined (from $REGISTRY{$pkg}{error_mode_installed})" if $REGISTRY{$pkg}{error_mode_installed};
-    $pkg->add_callback( init => sub { $_[0]->error_mode($name); } );
+    $pkg->add_callback(
+        init => sub {
+            return if exists $_[0]->{__ERROR_MODE_SET_BY_RUNMODEDECLARE};
+            $_[0]->error_mode($name);
+            $_[0]->{__ERROR_MODE_SET_BY_RUNMODEDECLARE} = 1;
+        }
+    );
     $REGISTRY{$pkg}{error_mode_installed} = $fullname;
 }
 
@@ -145,7 +158,7 @@ CGI::Application::Plugin::RunmodeDeclare - Declare runmodes with keywords
 
 =head1 VERSION
 
-Version 0.03
+Version 0.03_02
 
 =head1 SYNOPSIS
 

@@ -1,6 +1,10 @@
 Revision history for CGI-Application-Plugin-RunmodeDeclare
 
-0.04    2008-10-23  Rhesa Rozendaal <rhesa@cpan.org>
+0.03_02 2008-10-24  Rhesa Rozendaal <rhesa@cpan.org>
+        * bugfixes: prevent callback calling order from installing
+          the start/error mode from the parent class into child classes (Richard Jones)
+
+0.03_01 2008-10-23  Rhesa Rozendaal <rhesa@cpan.org>
         * new feature: support code attributes
         * simplified the signature parsing (see Method::Signatures::Simple)
         * simplified the installer code by using Devel::Declare::MethodInstaller::Simple

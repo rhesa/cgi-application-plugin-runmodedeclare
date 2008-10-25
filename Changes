@@ -1,5 +1,8 @@
 Revision history for CGI-Application-Plugin-RunmodeDeclare
 
+0.03_03 2008-10-24  Rhesa Rozendaal <rhesa@cpan.org>
+        * bugfix in _split
+
 0.03_02 2008-10-24  Rhesa Rozendaal <rhesa@cpan.org>
         * bugfixes: prevent callback calling order from installing
           the start/error mode from the parent class into child classes (Richard Jones)

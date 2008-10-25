@@ -3,7 +3,17 @@ package CGI::Application::Plugin::RunmodeDeclare;
 use warnings;
 use strict;
 
-our $VERSION = '0.03_02';
+our $VERSION = '0.04';
+
+=head1 NAME
+
+CGI::Application::Plugin::RunmodeDeclare - Declare runmodes with keywords
+
+=head1 VERSION
+
+Version 0.04
+
+=cut
 
 use base 'Devel::Declare::MethodInstaller::Simple';
 use Carp qw(croak);
@@ -44,7 +54,7 @@ sub import {
 my %REGISTRY;
 # per-macro setup
 sub _split {
-    my $n = shift; my ($p,$l) = $n =~ /(\w*)::(\w*)/; return ($p, $l);
+    my $n = shift; my ($p,$l) = $n =~ /^(.*?)(?:::(\w*))?$/; return ($p, $l);
 }
 sub _setup_runmode {
     my ($fullname, $code) = @_;
@@ -55,9 +65,11 @@ sub _setup_startmode {
     my ($fullname, $code) = @_;
     no strict 'refs'; no warnings 'uninitialized';
     my ($pkg, $name) = _split($fullname);
+    # compile time check
     croak "start mode redefined (from $REGISTRY{$pkg}{start_mode_installed})" if $REGISTRY{$pkg}{start_mode_installed};
     $pkg->add_callback(
         init => sub {
+            # run time check
             return if exists $_[0]->{__START_MODE_SET_BY_RUNMODEDECLARE};
             $_[0]->run_modes( [$name] );
             $_[0]->start_mode($name);
@@ -151,14 +163,6 @@ sub inject_parsed_proto {
 
 
 __END__
-
-=head1 NAME
-
-CGI::Application::Plugin::RunmodeDeclare - Declare runmodes with keywords
-
-=head1 VERSION
-
-Version 0.03_02
 
 =head1 SYNOPSIS
 

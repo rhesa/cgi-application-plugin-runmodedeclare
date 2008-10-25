@@ -4,6 +4,21 @@ use warnings;
 use Test::More 'no_plan';
 
 use lib 't/lib';
+
+use_ok 'CGI::Application::Plugin::RunmodeDeclare';
+my $split = \&CGI::Application::Plugin::RunmodeDeclare::_split;
+
+{
+    my ($p,$m) = $split->('MyApp');
+    is $p, 'MyApp'; is $m, undef;
+
+    ($p, $m) = $split->('MyApp::foo');
+    is $p, 'MyApp'; is $m, 'foo';
+
+    ($p, $m) = $split->('Long::Lost::Module::sub');
+    is $p, 'Long::Lost::Module'; is $m, 'sub';
+}
+
 use_ok 'MyApp1';
 
 my $app1 = MyApp1->new;

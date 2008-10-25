@@ -3,7 +3,7 @@ package CGI::Application::Plugin::RunmodeDeclare;
 use warnings;
 use strict;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 =head1 NAME
 
@@ -11,7 +11,7 @@ CGI::Application::Plugin::RunmodeDeclare - Declare runmodes with keywords
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =cut
 
@@ -150,17 +150,28 @@ sub inject_parsed_proto {
 
     for my $sig (@args) {
         my ($sigil, $name) = @$sig;
-        push @code, "${sigil}${name} = ${invocant}->param('${name}') unless defined ${sigil}${name}; ";
-        push @code, "${sigil}${name} = ${invocant}->query->param('${name}') unless defined ${sigil}${name}; ";
+        push @code, _default_for($sigil,$name,$invocant);
+        push @code, _default_for($sigil,$name,"${invocant}->query");
     }
 
     # All on one line.
     return join ' ', @code;
 }
 
+sub _default_for
+{
+    my $sigil = shift;
+    my $name = shift;
+    my $invocant = shift;
+
+    return
+          "${sigil}${name} = ${invocant}->param('${name}') unless "
+        . ( $sigil eq '$' ? 'defined' : '' )
+        . " ${sigil}${name}; ";
+
+}
 
 1; # End of CGI::Application::Plugin::RunmodeDeclare
-
 
 __END__
 
@@ -187,9 +198,8 @@ __END__
 
 =head1 DESCRIPTION
 
-This module allows you to declare run modes with a simple keyword. It's heavily
-inspired by L<Method::Signatures>, and copies all of its features (from
-version 0.10 at least).
+This module allows you to declare run modes with a simple keyword. It provides
+the same features as L<Method::Signatures::Simple>.
 
 It respects inheritance: run modes defined in the superclass are also available
 in the subclass.
@@ -227,8 +237,40 @@ to rename the invocant.
 
 Here, we specify that the method expects two parameters, C<$id> and C<$name>.
 Values can be supplied through a method call (e.g. C<< $self->baz(1, "me") >>),
-or from the query object (e.g. from C</script?id=42;name=me>), or from this cgiapp
-object (e.g. C<< $self->param( id => 42 ) >>).
+or from the cgiapp object (e.g. C<< $self->param( id => 42 ) >>), or from the
+query object (e.g. from C</script?id=42;name=me>).
+
+=item * Code attributes
+
+    runmode secret :Auth { ... }
+
+Code attributes are supported as well.
+
+=item * Combining with other ways to set run modes
+
+This all works:
+
+    sub setup {
+        my $self = shift;
+        $self->run_modes([ qw/ foo / ]);
+    }
+
+    sub foo {
+        my $self = shift;
+        return $self->other;
+    }
+
+    runmode bar {
+        return $self->other;
+    }
+
+    sub other : Runmode {
+        my $self = shift;
+        return $self->param('other');
+    }
+
+So you can still use the classic way of setting up run modes, and you can
+still use L<CGI::Application::Plugin::AutoRunmode>, *and* you can mix and match.
 
 =back
 
@@ -280,9 +322,12 @@ You tried to install another startmode. Placeholders are filled with
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-cgi-application-plugin-runmodedeclare at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=CGI-Application-Plugin-RunmodeDeclare>.  I will be notified, and then you'll
-automatically be notified of progress on your bug as I make changes.
+Please report any bugs or feature requests to
+C<bug-cgi-application-plugin-runmodedeclare at rt.cpan.org>, or through the web
+interface at
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=CGI-Application-Plugin-RunmodeDeclare>.
+I will be notified, and then you'll automatically be notified of progress on
+your bug as I make changes.
 
 
 

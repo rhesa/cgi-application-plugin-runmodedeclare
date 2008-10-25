@@ -1,5 +1,12 @@
 Revision history for CGI-Application-Plugin-RunmodeDeclare
 
+0.05    2008-10-25  Rhesa Rozendaal <rhesa@cpan.org>
+        * better default handling
+        * doc updates
+
+0.04    2008-10-25  Rhesa Rozendaal <rhesa@cpan.org>
+        * bumped prereq of Devel::Declare
+
 0.03_03 2008-10-24  Rhesa Rozendaal <rhesa@cpan.org>
         * bugfix in _split
 

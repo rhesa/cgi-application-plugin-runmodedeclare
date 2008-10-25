@@ -3,7 +3,7 @@ package CGI::Application::Plugin::RunmodeDeclare;
 use warnings;
 use strict;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 =head1 NAME
 
@@ -11,7 +11,7 @@ CGI::Application::Plugin::RunmodeDeclare - Declare runmodes with keywords
 
 =head1 VERSION
 
-Version 0.05
+Version 0.06
 
 =cut
 
@@ -127,7 +127,7 @@ sub parse_proto {
     $invocant = $1 if $proto =~ s{^(\$\w+):\s*}{};
 
     my @args = 
-        map { m{^ ([$@%])(\w+) }x ? [$1, $2] : () }
+        map { m{^ ([\$@%])(\w+) }x ? [$1, $2] : () }
         split /\s*,\s*/,
         $proto
     ;
@@ -154,7 +154,6 @@ sub inject_parsed_proto {
         push @code, _default_for($sigil,$name,"${invocant}->query");
     }
 
-    # All on one line.
     return join ' ', @code;
 }
 

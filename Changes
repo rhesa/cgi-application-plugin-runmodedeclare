@@ -1,5 +1,8 @@
 Revision history for CGI-Application-Plugin-RunmodeDeclare
 
+0.06    2008-10-25  Rhesa Rozendaal <rhesa@cpan.org>
+        Fixed stupid regex bug in proto parsing.
+
 0.05    2008-10-25  Rhesa Rozendaal <rhesa@cpan.org>
         * better default handling
         * doc updates

@@ -10,7 +10,7 @@ sub cgiapp_prerun
     shift->header_type('none')
 }
 
-errormode oops
+errormode oops($error)
 {
     "Oh noez!";
 }
@@ -20,7 +20,7 @@ startmode begin
     "Go"
 }
 
-runmode other()
+runmode other($foo, $bar, %stuff, @more)
 {
     return $c->get_current_runmode
 }

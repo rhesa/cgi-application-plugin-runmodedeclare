@@ -3,10 +3,11 @@ use strict;
 use warnings;
 
 use lib 't/lib';
-use Test::More tests => 5;
+use Test::More tests => 6;
 
 use_ok 'MyParamApp';
 use CGI;
+use Data::Dumper;
 
 {
     my $app = MyParamApp->new(PARAMS=>{id => 1});
@@ -33,6 +34,13 @@ use CGI;
     my $app = MyParamApp->new(QUERY=>$cgi, PARAMS=>{id=>6});
     my $out = $app->test(7);
     like $out, qr/id=7/, 'direct method args come first';
+}
+
+{
+    my $cgi = CGI->new('stuff=1;stuff=2;stuff=3');
+    my $app = MyParamApp->new(QUERY=>$cgi);
+    my $out = $app->array();
+    like $out, qr/stuff=1 2 3;/, 'multiple options work';
 }
 
 __END__

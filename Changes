@@ -1,5 +1,9 @@
 Revision history for CGI-Application-Plugin-RunmodeDeclare
 
+0.07    2009-01-10  Rhesa Rozendaal <rhesa@cpan.org>
+        Added tests for picking up values for method args
+        from self->param or self->query->param
+
 0.06    2008-10-25  Rhesa Rozendaal <rhesa@cpan.org>
         Fixed stupid regex bug in proto parsing.
 

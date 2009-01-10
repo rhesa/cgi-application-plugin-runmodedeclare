@@ -3,15 +3,9 @@ package CGI::Application::Plugin::RunmodeDeclare;
 use warnings;
 use strict;
 
-our $VERSION = '0.06';
-
 =head1 NAME
 
 CGI::Application::Plugin::RunmodeDeclare - Declare runmodes with keywords
-
-=head1 VERSION
-
-Version 0.06
 
 =cut
 
@@ -150,7 +144,7 @@ sub inject_parsed_proto {
 
     for my $sig (@args) {
         my ($sigil, $name) = @$sig;
-        push @code, _default_for($sigil,$name,$invocant);
+        push @code, _default_for($sigil,$name,$invocant) if $sigil eq '$'; # CA->param only handles scalars
         push @code, _default_for($sigil,$name,"${invocant}->query");
     }
 

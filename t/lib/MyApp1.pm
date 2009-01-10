@@ -20,7 +20,7 @@ startmode begin
     "Go"
 }
 
-runmode other($foo, $bar, %stuff, @more)
+runmode other($foo, $bar, @more)
 {
     return $c->get_current_runmode
 }

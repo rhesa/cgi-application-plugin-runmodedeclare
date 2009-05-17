@@ -1,5 +1,8 @@
 Revision history for CGI-Application-Plugin-RunmodeDeclare
 
+0.08    2009-05-18  Rhesa Rozendaal <rhesa@cpan.org>
+        Fix for multiline signatures
+
 0.07    2009-01-10  Rhesa Rozendaal <rhesa@cpan.org>
         Added tests for picking up values for method args
         from self->param or self->query->param

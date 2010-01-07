@@ -1,5 +1,8 @@
 Revision history for CGI-Application-Plugin-RunmodeDeclare
 
+0.09    2010-01-07  Rhesa Rozendaal <rhesa@cpan.org>
+        Added repository to META.yml. No code changes.
+
 0.08    2009-05-18  Rhesa Rozendaal <rhesa@cpan.org>
         Fix for multiline signatures
 

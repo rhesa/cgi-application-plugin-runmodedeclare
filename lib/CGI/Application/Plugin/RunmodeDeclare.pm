@@ -148,6 +148,7 @@ sub inject_parsed_proto {
         my ($sigil, $name) = @$sig;
         push @code, _default_for($sigil,$name,$invocant) if $sigil eq '$'; # CA->param only handles scalars
         push @code, _default_for($sigil,$name,"${invocant}->query");
+        push @code, _default_for($sigil,"${name}[]","${invocant}->query") if $sigil eq '@'; # support PHP-style foo[] params
     }
 
     return join ' ', @code;

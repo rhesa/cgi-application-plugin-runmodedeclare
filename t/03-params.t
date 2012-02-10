@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use lib 't/lib';
-use Test::More tests => 6;
+use Test::More tests => 7;
 
 use_ok 'MyParamApp';
 use CGI;
@@ -41,6 +41,13 @@ use Data::Dumper;
     my $app = MyParamApp->new(QUERY=>$cgi);
     my $out = $app->array();
     like $out, qr/stuff=1 2 3;/, 'multiple options work';
+}
+
+{
+    my $cgi = CGI->new('stuff[]=1;stuff[]=2;stuff[]=3');
+    my $app = MyParamApp->new(QUERY=>$cgi);
+    my $out = $app->array();
+    like $out, qr/stuff=1 2 3;/, 'multiple php-style options work';
 }
 
 __END__
